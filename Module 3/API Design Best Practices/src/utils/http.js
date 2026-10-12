@@ -1,22 +1,23 @@
-function sendList(res, rows) {
-  return res.status(200).json(rows);
+function sendSuccess(res, data, statusCode = 200, meta = null) {
+  const body = { data };
+  if (meta) {
+    body.meta = meta;
+  }
+  return res.status(statusCode).json(body);
 }
 
-function sendCreated(res, post) {
-  return res.status(200).json({ post });
-}
-
-function sendOk(res, payload) {
-  return res.status(200).json(payload);
-}
-
-function sendError(res, status, payload) {
-  return res.status(status).json(payload);
+function sendError(res, statusCode, message, details = null) {
+  const errorObj = {
+    message,
+    status: statusCode
+  };
+  if (details) {
+    errorObj.details = details;
+  }
+  return res.status(statusCode).json({ error: errorObj });
 }
 
 module.exports = {
-  sendList,
-  sendCreated,
-  sendOk,
+  sendSuccess,
   sendError
 };
